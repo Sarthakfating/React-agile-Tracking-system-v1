@@ -1,13 +1,107 @@
+/* Apply to the entire body */
 body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f8f9fa; /* Light gray background */
+  color: #333;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  padding: 0;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+/* Styling for all buttons */
+button {
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+}
+
+/* Primary Button */
+.btn-primary {
+  background-color: #007bff;
+  color: white;
+}
+
+/* Secondary Button */
+.btn-secondary {
+  background-color: #6c757d;
+  color: white;
+}
+
+/* Container for all pages */
+.container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 20px;
+}
+
+/* Navigation */
+/* Navbar styling */
+nav {
+  background-color: #343a40; /* Dark background */
+  padding: 10px 0; /* Reduce padding */
+  display: flex;
+  flex-direction: column; /* Stack items vertically */
+  align-items: flex-start; /* Align items to the left */
+  width: 100%; /* Ensure full width */
+  min-height: 10vh; /* Stretch full height of the screen */
+}
+
+/* List styling */
+nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%; /* Ensure it stretches fully */
+}
+
+/* Reduce spacing between items */
+nav ul li {
+  width: 100%;
+  padding: 5px 15px; /* Keep items close but readable */
+}
+
+/* Links & Button styling */
+nav ul li a, nav ul li button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  color: white;
+  text-decoration: none;
+  background: none;
+  border: none;
+  padding: 8px 15px; /* Adjust padding */
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* Hover effect */
+nav ul li a:hover, nav ul li button:hover {
+  background-color: #495057;
+}
+
+
+
+/* Table Styling */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.table th, .table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.table th {
+  background-color: #007bff;
+  color: white;
+}
+
+/* Form Styling */
+form {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
