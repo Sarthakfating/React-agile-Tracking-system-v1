@@ -1,16 +1,14 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { UserContext } from '../../context/UserContext';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
 
 const UserProfile = () => {
     const [userList, setUserList] = useState([]);
     const [taskList, setTaskList] = useState([]);
     const [currentUser, setCurrentUser] = useState(null);
     const [isFormVisible, setIsFormVisible] = useState(false);
-    const [inputName, setInputName] = useState('');
-    const [inputEmail, setInputEmail] = useState('');
-    const [inputPassword, setInputPassword] = useState('');
-    const [inputRole, setInputRole] = useState('employee');
     const { user } = useContext(UserContext);
 
     useEffect(() => {
@@ -44,23 +42,26 @@ const UserProfile = () => {
         loadTasks(userId);
     };
 
-    const addUser = async (event) => {
-        event.preventDefault();
+    const validationSchema = Yup.object().shape({
+        inputName: Yup.string().required('Name is required'),
+        inputEmail: Yup.string().email('Invalid email').required('Email is required'),
+        inputPassword: Yup.string().min(6, 'Password must be at least 6 characters').required('Password is required'),
+        inputRole: Yup.string().required('Role is required'),
+    });
+
+    const handleUserSubmit = async (values, { resetForm }) => {
         try {
             await axios.post('http://localhost:4000/users', {
-                name: inputName,
-                email: inputEmail,
-                password: inputPassword,
-                role: inputRole,
+                name: values.inputName,
+                email: values.inputEmail,
+                password: values.inputPassword,
+                role: values.inputRole,
             });
 
             const updatedUsers = await axios.get('http://localhost:4000/users');
             setUserList(updatedUsers.data.filter(usr => usr?.role !== 'admin'));
             setIsFormVisible(false);
-            setInputName('');
-            setInputEmail('');
-            setInputPassword('');
-            setInputRole('employee');
+            resetForm(); // Clears the form after submission
         } catch (error) {
             console.error('Error adding new user:', error);
         }
@@ -75,47 +76,40 @@ const UserProfile = () => {
                         {isFormVisible ? 'Cancel' : 'Add New User'}
                     </button>
                     {isFormVisible && (
-                        <form onSubmit={addUser}>
-                            <div>
-                                <label>Name:</label>
-                                <input
-                                    type="text"
-                                    value={inputName}
-                                    onChange={(e) => setInputName(e.target.value)}
-                                    required
-                                />
-                            </div>
-                            <div>
-                                <label>Email:</label>
-                                <input
-                                    type="email"
-                                    value={inputEmail}
-                                    onChange={(e) => setInputEmail(e.target.value)}
-                                    required
-                                />
-                            </div>
-                            <div>
-                                <label>Password:</label>
-                                <input
-                                    type="password"
-                                    value={inputPassword}
-                                    onChange={(e) => setInputPassword(e.target.value)}
-                                    required
-                                />
-                            </div>
-                            <div>
-                                <label>Role:</label>
-                                <select
-                                    value={inputRole}
-                                    onChange={(e) => setInputRole(e.target.value)}
-                                    required
-                                >
-                                    <option value="employee">Employee</option>
-                                    <option value="admin">Admin</option>
-                                </select>
-                            </div>
-                            <button type="submit">Create User</button>
-                        </form>
+                        <Formik
+                            initialValues={{ inputName: '', inputEmail: '', inputPassword: '', inputRole: 'employee' }}
+                            validationSchema={validationSchema}
+                            onSubmit={handleUserSubmit}
+                        >
+                            {() => (
+                                <Form>
+                                    <div>
+                                        <label>Name:</label>
+                                        <Field type="text" name="inputName" />
+                                        <ErrorMessage name="inputName" component="div" className="error" style={{ color: 'red' }}/>
+                                    </div>
+                                    <div>
+                                        <label>Email:</label>
+                                        <Field type="email" name="inputEmail" />
+                                        <ErrorMessage name="inputEmail" component="div" className="error" style={{ color: 'red' }}/>
+                                    </div>
+                                    <div>
+                                        <label>Password:</label>
+                                        <Field type="password" name="inputPassword" />
+                                        <ErrorMessage name="inputPassword" component="div" className="error" style={{ color: 'red' }} />
+                                    </div>
+                                    <div>
+                                        <label>Role:</label>
+                                        <Field as="select" name="inputRole">
+                                            <option value="employee">Employee</option>
+                                            <option value="admin">Admin</option>
+                                        </Field>
+                                        <ErrorMessage name="inputRole" component="div" className="error" style={{ color: 'red' }}/>
+                                    </div>
+                                    <button type="submit">Create User</button>
+                                </Form>
+                            )}
+                        </Formik>
                     )}
                     <ul>
                         {userList.map(usr => (
