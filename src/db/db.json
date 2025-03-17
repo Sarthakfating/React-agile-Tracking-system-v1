@@ -49,6 +49,10 @@
     {
       "name": "Scrum Team E",
       "id": 5
+    },
+    {
+      "name": "Scrum Team F",
+      "id": 6
     }
   ],
   "tasks": [
@@ -132,6 +136,20 @@
         }
       ],
       "id": 4
+    },
+    {
+      "title": "VIva",
+      "description": "To be excected",
+      "status": "To Do",
+      "scrumId": 6,
+      "assignedTo": 4,
+      "history": [
+        {
+          "status": "To Do",
+          "date": "2025-03-17"
+        }
+      ],
+      "id": 5
     }
   ]
 }

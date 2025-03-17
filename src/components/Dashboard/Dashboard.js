@@ -64,7 +64,7 @@ const Dashboard = () => {
                 description: values.taskDetails,
                 status: values.taskProgress,
                 scrumId: createdScrum.id,
-                assignedTo: values.taskAssignee,
+                assignedTo:Number(values.taskAssignee),
                 history: [
                     {
                         status: values.taskProgress,
